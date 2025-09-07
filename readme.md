@@ -123,7 +123,7 @@ Distributed under MIT License. See `LICENSE.md`
 
 ## Contact
 
-**Maintainer**: Your Name
+**Maintainer**: Benjamin Ramser
 Email: [iwpnd@posteo.de](mailto:iwpnd@posteo.de)
 
 ---
