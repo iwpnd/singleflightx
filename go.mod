@@ -1,4 +1,4 @@
-module github.com/iwpnd/gssf
+module github.com/iwpnd/singleflightx
 
 go 1.25.0
 
