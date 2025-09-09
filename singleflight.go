@@ -5,6 +5,13 @@ import (
 	"golang.org/x/sync/singleflight"
 )
 
+// Singleflighter is anything that implements singleflight.Group.
+type Singleflighter[T ~string, V any] interface {
+	Do(key T, fn func() (V, error)) (V, error, bool)
+	DoChan(key T, fn func() (V, error)) <-chan Result[V]
+	Forget(key T)
+}
+
 // Group wraps singleflight.Group with generics.
 //
 // T must be a string-like type (constraint ~string) to ensure keys can be

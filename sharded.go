@@ -12,19 +12,27 @@ package singleflight
 // modulo shardCount. By default, NewShardedGroup constructs shardCount
 // groups using DefaultShardCount and the package's newHash implementation.
 type ShardedGroup[T ~string, V any] struct {
-	newHash NewHash
-	shards  []Group[T, V]
+	hashFn NewHash
+	shards []Group[T, V]
 
 	shardCount uint64
 }
 
 // NewShardedGroup constructs a ShardedGroup that uses DefaultShardCount
 // shards and the package's newHash function to map keys to shards.
-// TODO: options
-func NewShardedGroup[T ~string, V any]() *ShardedGroup[T, V] {
-	s := &ShardedGroup[T, V]{
-		newHash:    newHash,
+func NewShardedGroup[T ~string, V any](opts ...ShardConfigOptions) *ShardedGroup[T, V] {
+	config := &ShardConfig{
+		hashFn:     newHash,
 		shardCount: DefaultShardCount,
+	}
+
+	for _, opt := range opts {
+		opt(config)
+	}
+
+	s := &ShardedGroup[T, V]{
+		hashFn:     config.hashFn,
+		shardCount: config.shardCount,
 	}
 
 	s.shards = make([]Group[T, V], s.shardCount)
@@ -64,7 +72,7 @@ func (sg *ShardedGroup[T, V]) Forget(key T) {
 // The hash is computed over the UTF-8 bytes of the key string, and the
 // result is reduced modulo shardCount.
 func (sg *ShardedGroup[T, V]) shardIndex(key T) uint64 {
-	hasher := sg.newHash()
+	hasher := sg.hashFn()
 	hasher.Write([]byte(key))
 
 	return hasher.Sum64() % sg.shardCount
