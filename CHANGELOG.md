@@ -1,3 +1,9 @@
+## [1.0.1](https://github.com/iwpnd/singleflightx/compare/v1.0.0...v1.0.1) (2025-09-09)
+
+### 🐛 Bug Fixes
+
+* 🐛 use shardconfigoption consistently ([535a250](https://github.com/iwpnd/singleflightx/commit/535a25078eaefeb55e71a636e7ce10d3fdc89003))
+
 ## 1.0.0 (2025-09-09)
 
 ### ✨ Features
