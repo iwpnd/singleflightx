@@ -3,7 +3,7 @@ package singleflight
 import "testing"
 
 func TestShardedGroupDo(t *testing.T) {
-	sg := NewShardedGroup[string, int]()
+	sg := NewShardedGroup[string, int](WithShardCount(2))
 	doDedupe(t, sg, keyA)
 }
 

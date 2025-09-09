@@ -20,9 +20,9 @@ type ShardConfig struct {
 	shardCount uint64
 }
 
-type ShardConfigOptions = func(*ShardConfig) func(*ShardConfig) error
+type ShardConfigOption = func(*ShardConfig)
 
-func WithShardCount(shardCount uint64) func(*ShardConfig) {
+func WithShardCount(shardCount uint64) ShardConfigOption {
 	return func(config *ShardConfig) {
 		config.shardCount = shardCount
 	}

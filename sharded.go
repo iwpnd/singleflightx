@@ -20,7 +20,7 @@ type ShardedGroup[T ~string, V any] struct {
 
 // NewShardedGroup constructs a ShardedGroup that uses DefaultShardCount
 // shards and the package's newHash function to map keys to shards.
-func NewShardedGroup[T ~string, V any](opts ...ShardConfigOptions) *ShardedGroup[T, V] {
+func NewShardedGroup[T ~string, V any](opts ...ShardConfigOption) *ShardedGroup[T, V] {
 	config := &ShardConfig{
 		hashFn:     newHash,
 		shardCount: DefaultShardCount,
@@ -28,6 +28,10 @@ func NewShardedGroup[T ~string, V any](opts ...ShardConfigOptions) *ShardedGroup
 
 	for _, opt := range opts {
 		opt(config)
+	}
+
+	if config.shardCount < 2 {
+		config.shardCount = 2
 	}
 
 	s := &ShardedGroup[T, V]{
